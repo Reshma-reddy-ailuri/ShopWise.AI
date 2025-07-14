@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useQuery } from 'react-query'
 import { useTranslation } from 'react-i18next'
@@ -20,6 +20,7 @@ import OrderStepper from '../components/UI/OrderStepper'
 import { useCart } from '../context/CartContext'
 import { useAuth } from '../context/AuthContext'
 import { useLanguage } from '../context/LanguageContext'
+import AIAssistantModal from '../components/UI/AIAssistantModal'
 import toast from 'react-hot-toast'
 
 const HomePage = () => {
@@ -27,6 +28,7 @@ const HomePage = () => {
   const { isAuthenticated } = useAuth()
   const { formatCurrency: formatLocalizedCurrency } = useLanguage()
   const { t } = useTranslation()
+  const [isAIAssistantOpen, setIsAIAssistantOpen] = useState(false)
 
   // Fetch featured products
   const { data: featuredProducts, isLoading: featuredLoading } = useQuery(
@@ -135,7 +137,10 @@ const HomePage = () => {
                   {t('homepage.shopNow')}
                   <ArrowRight className="w-5 h-5 ml-2" />
                 </Link>
-                <button className="btn btn-lg btn-outline border-white text-white hover:bg-white hover:text-walmart-blue">
+                <button
+                  onClick={() => setIsAIAssistantOpen(true)}
+                  className="btn btn-lg btn-outline border-white text-white hover:bg-white hover:text-walmart-blue"
+                >
                   Try AI Assistant
                 </button>
               </div>
@@ -371,7 +376,7 @@ const HomePage = () => {
       </section>
 
       {/* AI Features Section */}
-      <section className="py-16 bg-gradient-to-br from-blue-50 to-purple-50">
+      <section id="ai-features" className="py-16 bg-gradient-to-br from-blue-50 to-purple-50">
         <div className="container">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
@@ -431,6 +436,12 @@ const HomePage = () => {
           </Link>
         </div>
       </section>
+
+      {/* AI Assistant Modal */}
+      <AIAssistantModal
+        isOpen={isAIAssistantOpen}
+        onClose={() => setIsAIAssistantOpen(false)}
+      />
     </div>
   )
 }

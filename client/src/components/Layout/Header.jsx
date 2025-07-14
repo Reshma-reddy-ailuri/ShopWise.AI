@@ -17,11 +17,11 @@ import { useCart } from '../../context/CartContext'
 import { useLanguage } from '../../context/LanguageContext'
 import { formatCurrency, storage } from '../../utils/helpers'
 import LanguageSwitcher from '../UI/LanguageSwitcher'
+import AISearchBar from '../UI/AISearchBar'
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false)
-  const [searchQuery, setSearchQuery] = useState('')
   const [budgetLimit, setBudgetLimit] = useState(0)
 
   const { user, isAuthenticated, logout } = useAuth()
@@ -39,14 +39,6 @@ const Header = () => {
   // Check if budget is exceeded or close to limit
   const isBudgetExceeded = budgetLimit > 0 && total > budgetLimit
   const isNearBudgetLimit = budgetLimit > 0 && total > budgetLimit * 0.8 && !isBudgetExceeded
-
-  const handleSearch = (e) => {
-    e.preventDefault()
-    if (searchQuery.trim()) {
-      navigate(`/products?search=${encodeURIComponent(searchQuery.trim())}`)
-      setSearchQuery('')
-    }
-  }
 
   const handleLogout = () => {
     logout()
@@ -101,23 +93,9 @@ const Header = () => {
             </div>
           </Link>
 
-          {/* Search bar */}
+          {/* AI Search bar */}
           <div className="hidden md:flex flex-1 max-w-2xl mx-8">
-            <form onSubmit={handleSearch} className="flex w-full">
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search everything at ShopWise..."
-                className="flex-1 px-4 py-3 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-walmart-blue focus:border-walmart-blue"
-              />
-              <button
-                type="submit"
-                className="bg-walmart-yellow hover:bg-yellow-500 px-6 py-3 rounded-r-lg transition-colors duration-200"
-              >
-                <Search className="w-5 h-5 text-gray-700" />
-              </button>
-            </form>
+            <AISearchBar />
           </div>
 
           {/* Right side actions */}
@@ -224,23 +202,9 @@ const Header = () => {
           </div>
         </div>
 
-        {/* Mobile search */}
+        {/* Mobile AI search */}
         <div className="md:hidden mt-4">
-          <form onSubmit={handleSearch} className="flex">
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder={t('header.searchPlaceholder')}
-              className="flex-1 px-4 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-walmart-blue"
-            />
-            <button
-              type="submit"
-              className="bg-walmart-yellow hover:bg-yellow-500 px-4 py-2 rounded-r-lg"
-            >
-              <Search className="w-5 h-5 text-gray-700" />
-            </button>
-          </form>
+          <AISearchBar isMobile={true} />
         </div>
       </div>
 
