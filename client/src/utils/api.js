@@ -1,15 +1,30 @@
 import axios from 'axios'
 import toast from 'react-hot-toast'
 
-// Create axios instance - DIRECT FIX for production
-const baseURL = 'https://shopwise-ai-1.onrender.com/api'
+// Create axios instance with proper environment handling
+const getApiBaseURL = () => {
+  // Check if we're in production
+  const isProduction = window.location.hostname !== 'localhost'
+
+  if (isProduction) {
+    // Production - use Render backend
+    return 'https://shopwise-ai-1.onrender.com/api'
+  } else {
+    // Development - use environment variable or default
+    return import.meta.env.VITE_API_URL || 'http://localhost:5000/api'
+  }
+}
+
+const baseURL = getApiBaseURL()
+console.log('🔗 API Base URL:', baseURL)
 
 const api = axios.create({
   baseURL,
-  timeout: 10000,
+  timeout: 15000, // Increased timeout for better reliability
   headers: {
     'Content-Type': 'application/json',
   },
+  withCredentials: false, // Ensure CORS works properly
 })
 
 // Request interceptor to add auth token
@@ -87,10 +102,17 @@ api.interceptors.response.use(
           }
       }
     } else if (error.request) {
-      // Network error
-      toast.error('Network error. Please check your connection.')
+      // Network error - this is the main issue we're trying to fix
+      console.error('🚨 Network Error Details:')
+      console.error('API Base URL:', baseURL)
+      console.error('Request URL:', error.config?.url)
+      console.error('Full URL:', error.config?.baseURL + error.config?.url)
+      console.error('Error:', error)
+
+      toast.error('Unable to connect to server. Please try again.', { duration: 3000 })
     } else {
       // Other errors
+      console.error('🚨 Unexpected Error:', error)
       toast.error('An unexpected error occurred')
     }
 
