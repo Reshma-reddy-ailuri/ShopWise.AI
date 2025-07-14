@@ -84,4 +84,13 @@ const OrdersPage = () => {
     )
   }
 
+  // TODO: Add the main component return statement here
+  return (
+    <div className="container py-8">
+      <h1 className="text-2xl font-bold text-gray-900 mb-6">My Orders</h1>
+      <p className="text-gray-600">Order management functionality coming soon...</p>
+    </div>
+  )
+}
+
 export default OrdersPage
