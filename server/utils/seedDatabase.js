@@ -300,7 +300,7 @@ const products = [
     shortDescription: 'Classic aviator sunglasses with UV protection',
     price: 45,
     originalPrice: 65,
-    category: 'Accessories',
+    category: 'Clothing',
     subcategory: 'Eyewear',
     brand: 'SunShield',
     sku: 'SS-AV-001',
