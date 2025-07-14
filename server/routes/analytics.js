@@ -2,7 +2,7 @@ const express = require('express');
 const Order = require('../models/Order');
 const Product = require('../models/Product');
 const User = require('../models/User');
-const { protect, adminOnly } = require('../middleware/auth');
+const { protect, admin } = require('../middleware/auth');
 
 const router = express.Router();
 
@@ -11,7 +11,7 @@ const router = express.Router();
  * @desc    Get dashboard analytics data
  * @access  Private/Admin
  */
-router.get('/dashboard', protect, adminOnly, async (req, res) => {
+router.get('/dashboard', protect, admin, async (req, res) => {
   try {
     const { period = '12months' } = req.query;
     
@@ -217,7 +217,7 @@ router.get('/dashboard', protect, adminOnly, async (req, res) => {
  * @desc    Get detailed revenue analytics
  * @access  Private/Admin
  */
-router.get('/revenue', protect, adminOnly, async (req, res) => {
+router.get('/revenue', protect, admin, async (req, res) => {
   try {
     const { period = '12months', granularity = 'month' } = req.query;
     
@@ -304,7 +304,7 @@ router.get('/revenue', protect, adminOnly, async (req, res) => {
  * @desc    Get product performance analytics
  * @access  Private/Admin
  */
-router.get('/products', protect, adminOnly, async (req, res) => {
+router.get('/products', protect, admin, async (req, res) => {
   try {
     const { period = '30days', limit = 20 } = req.query;
     
