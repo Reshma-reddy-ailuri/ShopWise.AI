@@ -2,8 +2,22 @@ import axios from 'axios'
 import toast from 'react-hot-toast'
 
 // Create axios instance
+const getBaseURL = () => {
+  // Production API URL
+  if (import.meta.env.PROD) {
+    return import.meta.env.VITE_API_URL || 'https://shopwise-ai-1.onrender.com/api'
+  }
+  // Development API URL
+  return import.meta.env.VITE_API_URL || '/api'
+}
+
+const baseURL = getBaseURL()
+console.log('🔗 API Base URL:', baseURL)
+console.log('🌍 Environment:', import.meta.env.MODE)
+console.log('🔧 VITE_API_URL:', import.meta.env.VITE_API_URL)
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || '/api',
+  baseURL,
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
