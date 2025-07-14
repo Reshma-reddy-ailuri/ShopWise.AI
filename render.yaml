@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: shopwise-ai-backend
+    env: node
+    plan: free
+    buildCommand: cd server && npm install
+    startCommand: cd server && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: MONGODB_URI
+        fromDatabase:
+          name: shopwise-ai-db
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+      - key: CLIENT_URL
+        value: https://your-frontend-url.vercel.app
+
+databases:
+  - name: shopwise-ai-db
+    databaseName: shopwise
+    user: shopwise-user
+    plan: free
