@@ -1,3 +1,4 @@
+// AI-powered search with voice and image capabilities
 import React, { useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { 
